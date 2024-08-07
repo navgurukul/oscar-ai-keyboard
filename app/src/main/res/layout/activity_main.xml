@@ -20,7 +20,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/enableId"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -31,12 +31,12 @@
         android:layout_marginStart="15dp"
         android:layout_marginEnd="15dp"
         android:layout_marginTop="80dp"
+        android:gravity="center"
         android:background="@drawable/background_buttons"
         android:backgroundTint="#51A09B"
         app:layout_constraintTop_toBottomOf="@+id/txtIdOne"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
-
     <TextView
         android:id="@+id/text1"
         android:layout_width="wrap_content"
@@ -54,7 +54,7 @@
         android:layout_marginEnd="10dp"
          />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/setupID"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -64,6 +64,7 @@
         android:textColor="#FFFFFF"
         android:layout_marginStart="15dp"
         android:layout_marginEnd="15dp"
+        android:gravity="center"
         android:layout_marginTop="16dp"
         android:background="@drawable/background_buttons"
         android:backgroundTint="#51A09B"

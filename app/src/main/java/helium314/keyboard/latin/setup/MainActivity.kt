@@ -4,11 +4,15 @@ import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
+import android.text.SpannableString
+import android.text.Spanned
+import android.text.style.ImageSpan
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.AppCompatButton
 import helium314.keyboard.latin.R
 import helium314.keyboard.latin.databinding.ActivityMainBinding
 import helium314.keyboard.latin.utils.UncachedInputMethodManagerUtils
@@ -113,9 +117,16 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun changeButtonColor(button: Button) {
+    private fun changeButtonColor(button: AppCompatButton) {
         button.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#E0E0E0"))
         button.setTextColor(Color.GRAY)
+
         button.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_check, 0, 0, 0)
+
+        val leftPadding = button.paddingLeft + 280
+//        val rightPadding = button.paddingRight + 9
+        button.setPadding(leftPadding, button.paddingTop, 0, button.paddingBottom)
+
+        button.gravity = android.view.Gravity.CENTER_VERTICAL or android.view.Gravity.START
     }
 }
