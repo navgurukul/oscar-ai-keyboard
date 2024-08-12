@@ -25,6 +25,9 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.OvalShape;
+import android.net.ConnectivityManager;
+import android.net.Network;
+import android.net.NetworkCapabilities;
 import android.os.Build;
 import android.os.Bundle;
 import android.speech.RecognitionListener;
@@ -94,6 +97,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
@@ -898,6 +902,7 @@ public final class SuggestionStripView extends RelativeLayout implements OnClick
         return true;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void onClick(final View view) {
         AudioAndHapticFeedbackManager.getInstance().performHapticAndAudioFeedback(KeyCode.NOT_SPECIFIED, this);
@@ -936,9 +941,11 @@ public final class SuggestionStripView extends RelativeLayout implements OnClick
             if (recordStatus) {
                 manualStopRecord = true;
                 stopRecord();
-            } else {
+            } else if (isInternetAvailable()) {
                 manualStopRecord = false;
                 startRecord();
+            } else {
+                Toast.makeText(this.getContext(), "Oops! Internet connection lost.", Toast.LENGTH_SHORT).show();
             }
         }
         if (tag instanceof ToolbarKey) {
@@ -1063,6 +1070,23 @@ public final class SuggestionStripView extends RelativeLayout implements OnClick
         view.setOnLongClickListener(this);
         colors.setColor(view, ColorType.TOOL_BAR_KEY);
         colors.setBackground(view, ColorType.STRIP_BACKGROUND);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    private boolean isInternetAvailable() {
+        Context context = getContext();
+        if (context == null) {
+            return false;
+        }
+        ConnectivityManager connectivityManager =
+                (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (connectivityManager != null) {
+            Network network = connectivityManager.getActiveNetwork();
+            NetworkCapabilities networkCapabilities = connectivityManager.getNetworkCapabilities(network);
+            return networkCapabilities != null &&
+                    networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET);
+        }
+        return false;
     }
 
 
