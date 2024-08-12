@@ -335,7 +335,6 @@ public final class SuggestionStripView extends RelativeLayout implements OnClick
     private final TextView aiOutput;
 
     private final ImageView ivOscarVoiceInput;
-    private LottieAnimationView animationView;
 
     private final LottieAnimationView lvTextProgress;
 
@@ -414,7 +413,6 @@ public final class SuggestionStripView extends RelativeLayout implements OnClick
         aiOutput = findViewById(R.id.ai_output);
         ivOscarVoiceInput = findViewById(R.id.ivOscarVoiceInput);
         lvTextProgress = findViewById(R.id.lvTextProgress);
-        animationView= findViewById(R.id.animation);
 
 
         for (int pos = 0; pos < SuggestedWords.MAX_SUGGESTIONS; pos++) {
@@ -989,8 +987,6 @@ public final class SuggestionStripView extends RelativeLayout implements OnClick
         ivOscarVoiceInput.setImageDrawable(getResources().getDrawable(R.drawable.baseline_mic_off_24));
         recordStatus = false;
         speechRecognizer.stopListening();
-        animationView.setVisibility(GONE);
-
     }
 
 
@@ -1012,8 +1008,6 @@ public final class SuggestionStripView extends RelativeLayout implements OnClick
         ivOscarVoiceInput.setImageDrawable(getResources().getDrawable(R.drawable.sym_keyboard_voice_holo));
 
         recordStatus = true;
-
-        animationView.setVisibility(VISIBLE);
     }
 
     @Override

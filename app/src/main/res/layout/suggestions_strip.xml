@@ -83,16 +83,6 @@
             android:gravity="center"
             android:layout_height="35dp"/>
         <com.airbnb.lottie.LottieAnimationView
-            android:id="@+id/animation"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:layout_gravity="center_vertical"
-            app:lottie_autoPlay="true"
-            app:lottie_loop="true"
-            android:visibility="gone"
-            app:lottie_rawRes="@raw/animation"
-            />
-        <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/lvTextProgress"
             android:layout_width="match_parent"
             android:layout_height="35dp"
