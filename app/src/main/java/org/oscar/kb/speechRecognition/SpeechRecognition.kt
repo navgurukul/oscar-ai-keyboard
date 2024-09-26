@@ -9,6 +9,7 @@ import android.speech.RecognizerIntent
 import android.speech.SpeechRecognizer
 import android.util.Log
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import com.google.firebase.analytics.FirebaseAnalytics
 import org.greenrobot.eventbus.EventBus
 import org.oscar.kb.AIEngine.AIOutputEvent
 import org.oscar.kb.audioService.FlashlightControlBasedOnPreference
@@ -16,12 +17,21 @@ import org.oscar.kb.audioService.FlashlightControlBasedOnPreference
 //import org.oscar.kb.audioService.FlashlightControlBasedOnPreference
 //import org.oscar.kb.speechRecognition.SpeechRecognitionSettings
 
+
 class SpeechRecognition(context: Context) : SpeechRecognitionSettings(context) {
-    private val speechRecognizer = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-        // Recognition will occur offline (including Android 12 and above)
-        SpeechRecognizer.createOnDeviceSpeechRecognizer(context)
-    } else {
-        // Recognition will occur via the Internet :(
+    private val speechRecognizer : SpeechRecognizer = try {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            Log.d("SpeechRecognition", "Is on-device recognition available: ${SpeechRecognizer.isOnDeviceRecognitionAvailable(context)}")
+            // Recognition will occur offline (including Android 12 and above)
+            Log.d("SpeechRecognition", "Creating On-Device Speech Recognizer")
+            SpeechRecognizer.createOnDeviceSpeechRecognizer(context)
+        } else {
+            // Recognition will occur via the Internet :(
+            Log.d("SpeechRecognition", "On-device recognition is not available, creating Internet-based recognizer")
+            SpeechRecognizer.createSpeechRecognizer(context)
+        }
+    } catch (e: UnsupportedOperationException) {
+        Log.e("SpeechRecognition", e.message.toString())
         SpeechRecognizer.createSpeechRecognizer(context)
     }
     private val speechRecognizerIntent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).apply {
