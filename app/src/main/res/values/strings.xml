@@ -807,7 +807,7 @@ New dictionary:
     <!-- license for about screen-->
     <string name="license">Open-source license</string>
     <!-- license link for about screen-->
-    <string name="gnu_gpl">GNU General Public License v3.0</string>
+    <string name="gnu_gpl">MIT License</string>
     <!-- Button to close a dialog where neither "ok" nor "cancel" are suitable -->
     <string name="dialog_close">Close</string>
     <!-- Preference for selecting system locales -->
