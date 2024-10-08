@@ -1,8 +1,8 @@
-package helium314.keyboard.latin
+package org.oscar.kb.latin
 
 import android.content.Context
 import android.content.SharedPreferences
-import helium314.keyboard.latin.settings.Settings
+import org.oscar.kb.latin.settings.Settings
 import kotlinx.serialization.json.Json
 
 fun customIconNames(prefs: SharedPreferences) = runCatching {

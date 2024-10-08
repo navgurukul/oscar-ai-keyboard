@@ -44,6 +44,7 @@ import org.oscar.kb.latin.utils.RunInLocaleKt;
 import org.oscar.kb.latin.utils.SubtypeSettingsKt;
 import org.oscar.kb.latin.utils.ResourceUtils;
 import org.oscar.kb.latin.utils.StatsUtils;
+import org.oscar.kb.latin.utils.ToolbarKey;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -715,15 +716,4 @@ public final class Settings implements SharedPreferences.OnSharedPreferenceChang
         return mPrefs.getString(PREF_CUSTOM_CURRENCY_KEY, "");
     }
 
-    public Integer getCustomToolbarKeyCode(ToolbarKey key) {
-        if (mCustomToolbarKeyCodes == null)
-            mCustomToolbarKeyCodes = ToolbarUtilsKt.readCustomKeyCodes(mPrefs);
-        return mCustomToolbarKeyCodes.get(key.name());
-    }
-
-    public Integer getCustomToolbarLongpressCode(ToolbarKey key) {
-        if (mCustomToolbarLongpressCodes == null)
-            mCustomToolbarLongpressCodes = ToolbarUtilsKt.readCustomLongpressCodes(mPrefs);
-        return mCustomToolbarLongpressCodes.get(key.name());
-    }
 }

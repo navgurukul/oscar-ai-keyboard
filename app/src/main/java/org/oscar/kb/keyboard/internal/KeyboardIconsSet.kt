@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.res.Resources
 import android.graphics.drawable.Drawable
 import androidx.core.content.ContextCompat
+import org.oscar.kb.latin.customIconIds
 import org.oscar.kb.R
 import org.oscar.kb.keyboard.KeyboardTheme
 import org.oscar.kb.latin.settings.Settings

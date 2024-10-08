@@ -10,14 +10,6 @@ import org.oscar.kb.latin.utils.defaultClipboardToolbarPref
 import org.oscar.kb.latin.utils.defaultPinnedToolbarPref
 import org.oscar.kb.latin.utils.defaultToolbarPref
 import org.oscar.kb.latin.utils.reorderDialog
-import helium314.keyboard.keyboard.KeyboardSwitcher
-import helium314.keyboard.keyboard.internal.KeyboardIconsSet
-import helium314.keyboard.latin.R
-import helium314.keyboard.latin.utils.defaultClipboardToolbarPref
-import helium314.keyboard.latin.utils.defaultPinnedToolbarPref
-import helium314.keyboard.latin.utils.defaultToolbarPref
-import helium314.keyboard.latin.utils.reorderDialog
-import helium314.keyboard.latin.utils.toolbarKeysCustomizer
 
 class ToolbarSettingsFragment : SubScreenFragment() {
     private var reloadKeyboard = false
@@ -47,14 +39,10 @@ class ToolbarSettingsFragment : SubScreenFragment() {
         findPreference<Preference>(Settings.PREF_CLIPBOARD_TOOLBAR_KEYS)?.onPreferenceClickListener =
             Preference.OnPreferenceClickListener {
                 reorderDialog(
-                    requireContext(), Settings.PREF_CLIPBOARD_TOOLBAR_KEYS, defaultClipboardToolbarPref,
+                    requireContext(),
+                    Settings.PREF_CLIPBOARD_TOOLBAR_KEYS, defaultClipboardToolbarPref,
                     R.string.clipboard_toolbar_keys
                 ) { iconsSet.getNewDrawable(it, requireContext()) }
-                true
-            }
-        findPreference<Preference>("customize_key_codes")?.onPreferenceClickListener =
-            Preference.OnPreferenceClickListener {
-                toolbarKeysCustomizer(requireContext())
                 true
             }
     }
