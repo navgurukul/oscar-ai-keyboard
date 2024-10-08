@@ -1,13 +1,10 @@
-package org.oscar.kb.latin.setup;
+package org.oscar.kb.latin.database;
 
 import android.content.Context;
-import androidx.annotation.NonNull;
+
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
-import androidx.room.migration.Migration;
-import androidx.sqlite.db.SupportSQLiteDatabase;
-
 
 
 @Database(entities = {Prompt.class}, version = 2)
