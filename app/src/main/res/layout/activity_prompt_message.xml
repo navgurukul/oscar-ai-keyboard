@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#DCECEB"
-    tools:context=".latin.setup.PromptHistoryActivity">
+    tools:context=".latin.database.PromptHistoryActivity">
 
     <TextView
         android:id="@+id/tv_welcomeText"

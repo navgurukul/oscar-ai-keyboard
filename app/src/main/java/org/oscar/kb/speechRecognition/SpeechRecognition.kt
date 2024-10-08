@@ -2,7 +2,6 @@ package org.oscar.kb.speechRecognition
 
 import android.content.Context
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.speech.RecognitionListener
 import android.speech.RecognizerIntent
@@ -10,8 +9,6 @@ import android.speech.SpeechRecognizer
 import android.util.Log
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import org.oscar.kb.audioService.FlashlightControlBasedOnPreference
-import org.oscar.kb.latin.setup.AppDatabase
-import org.oscar.kb.latin.setup.Prompt
 
 //import org.oscar.kb.audioService.FlashlightControlBasedOnPreference
 //import org.oscar.kb.speechRecognition.SpeechRecognitionSettings

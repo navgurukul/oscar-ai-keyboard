@@ -537,4 +537,4 @@ private fun getAvailableSecondaryLocales(
     return locales
 }
 
-private const val LAYOUT_FORMAT_URL = "https://github.com/Helium314/HeliBoard/blob/main/layouts.md"
+private const val LAYOUT_FORMAT_URL = "https://github.com/navgurukul/oscar-ai-keyboard/blob/main/layouts.md"

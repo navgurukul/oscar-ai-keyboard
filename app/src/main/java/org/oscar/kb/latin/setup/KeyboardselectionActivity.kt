@@ -44,6 +44,7 @@ import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.oscar.kb.R
+import org.oscar.kb.latin.database.PromptHistoryActivity
 
 class KeyboardselectionActivity : AppCompatActivity(),
     NavigationView.OnNavigationItemSelectedListener, SummarizeTextProvider, OutputTextListener {
