@@ -1,9 +1,17 @@
 package org.oscar.kb.latin.suggestions;
 
+import static android.app.ProgressDialog.show;
+import static androidx.core.content.ContextCompat.getSystemService;
+import static androidx.core.content.ContextCompat.startActivity;
 import static org.oscar.kb.latin.utils.ToolbarUtilsKt.createToolbarKey;
 import static org.oscar.kb.latin.utils.ToolbarUtilsKt.getCodeForToolbarKey;
 import static org.oscar.kb.latin.utils.ToolbarUtilsKt.getCodeForToolbarKeyLongClick;
 
+import android.app.NotificationManager;
+import android.media.AudioManager;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
 import android.widget.Button;
@@ -156,7 +164,10 @@ public final class SuggestionStripView extends RelativeLayout implements OnClick
             return; // Ignore updates if cancelled
         }
         new Handler(Looper.getMainLooper()).post(() -> {
+            // Clear old output
+            aiOutput.setText("");
             aiOutput.setText(recognizedText);  // Update UI with AI-corrected text
+            Log.d("SuggestionStripView", "AI Output: " + recognizedText);
 
             // Removing any calls to the Gemini API here
 
@@ -207,6 +218,7 @@ public final class SuggestionStripView extends RelativeLayout implements OnClick
         public void onReceive(Context context, Intent intent) {
             String recognizedText = intent != null ? intent.getStringExtra("recognizedText") : null;
             if (recognizedText != null) {
+                // Clear previous output before updating
                 Log.d("SuggestionStripView", recognizedText);
                 // Save the recognized text (user input) to the Room database
                 //saveUserTextToDatabase(recognizedText);  // Call the function to save original user input
@@ -214,9 +226,12 @@ public final class SuggestionStripView extends RelativeLayout implements OnClick
                 // Process AI text
                 //updateText(recognizedText);
                 tempRecognizedText = recognizedText;
+                aiOutput.setText(recognizedText); // Immediate UI update
 
-                // Optionally update the UI (if needed)
-                aiOutput.setText(recognizedText);
+                Log.d("SuggestionStripView", "Recognized text: " + recognizedText);
+
+                // Send to AI processing
+                sendToGeminiAPI(tempRecognizedText);
             }
         }
     };
@@ -341,6 +356,9 @@ public final class SuggestionStripView extends RelativeLayout implements OnClick
     private final ImageView tvAudioProgress;
 
     private SpeechRecognizer speechRecognizer;
+    private AudioManager audioManager;
+    private int previousVolume;
+    int currentmode;
 
 
     private final View mMoreSuggestionsContainer;
@@ -427,6 +445,9 @@ public final class SuggestionStripView extends RelativeLayout implements OnClick
         timerTextView = findViewById(R.id.timerTextView);
         cancel = findViewById(R.id.et_cancel);
         done = findViewById(R.id.et_done);
+        audioManager = (AudioManager) getContext().getSystemService(Context.AUDIO_SERVICE);
+        currentmode = audioManager.getRingerMode();
+
         for (int pos = 0; pos < SuggestedWords.MAX_SUGGESTIONS; pos++) {
             final TextView word = new TextView(context, null, R.attr.suggestionWordStyle);
             word.setContentDescription(getResources().getString(R.string.spoken_empty_suggestion));
@@ -441,6 +462,7 @@ public final class SuggestionStripView extends RelativeLayout implements OnClick
             info.setTextSize(TypedValue.COMPLEX_UNIT_DIP, DEBUG_INFO_TEXT_SIZE_IN_DIP);
             mDebugInfoViews.add(info);
         }
+
         mic_suggestion_strip.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -453,6 +475,21 @@ public final class SuggestionStripView extends RelativeLayout implements OnClick
                 startTimer();  // Starts the timer
                 startRecord();
                 vibrate();
+                NotificationManager notificationManager = (NotificationManager) getContext().getSystemService(Context.NOTIFICATION_SERVICE);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !notificationManager.isNotificationPolicyAccessGranted()) {
+                    // Ask for permission to modify Do Not Disturb settings
+                    Intent intent = new Intent(android.provider.Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);  // Add this line
+                    getContext().startActivity(intent);
+
+                } else {
+                    // Permission granted, modify ringer mode
+                    audioManager.setRingerMode(AudioManager.RINGER_MODE_SILENT);
+                    Toast.makeText(getContext(), "Silent Mode Activated..", Toast.LENGTH_SHORT).show();
+
+                    audioManager.setRingerMode(AudioManager.RINGER_MODE_VIBRATE);
+                    Toast.makeText(getContext(), "Vibrate Mode Activated..", Toast.LENGTH_SHORT).show();
+                }
             }
         });
         cancel.setOnClickListener(new OnClickListener() {
@@ -469,6 +506,8 @@ public final class SuggestionStripView extends RelativeLayout implements OnClick
                 isCancelled = true;
                 tempRecognizedText = null; // Optionally clear the temporary text
                 aiOutput.setText(""); // Optionally clear the TextView
+                audioManager.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
+                Toast.makeText(getContext(), "Ringtone Mode Activated..", Toast.LENGTH_SHORT).show();
             }
         });
         done.setOnClickListener(new View.OnClickListener() {
@@ -483,6 +522,8 @@ public final class SuggestionStripView extends RelativeLayout implements OnClick
                 ivDelete.setVisibility(View.VISIBLE);
                 stopRecord();
                 isCancelled = false;
+                audioManager.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
+                Toast.makeText(getContext(), "Ringtone Mode Activated..", Toast.LENGTH_SHORT).show();
 
                 // Save user input
                 if (tempRecognizedText != null) {
@@ -1126,11 +1167,13 @@ public final class SuggestionStripView extends RelativeLayout implements OnClick
 
                     tvAudioProgress.setImageDrawable(getResources().getDrawable(R.drawable.baseline_mic_24));
                     recordStatus = false;
+                    // Clear previous recognized text
+                    tempRecognizedText = null;
                 }
             }, 5000);
 
         } catch (Exception e) {
-            Log.d(TAG, "Error in starting record: " + e.getMessage());
+            Log.d(TAG, "Error in stopping record: " + e.getMessage());
             crashlytics.recordException(e);
         }
     }
@@ -1140,12 +1183,14 @@ public final class SuggestionStripView extends RelativeLayout implements OnClick
         try {
             aiOutput.setVisibility(View.GONE);
             //lvTextProgress.setVisibility(View.VISIBLE);
+            // Clear text accumulators before new recording
+            tempRecognizedText = null;
+            transcriptionBuffer.setLength(0); // Clear the buffer
+            Log.d(TAG, "Recording started");
 
             startForegroundService();
             //tvAudioProgress.playAnimation();
             tvAudioProgress.setImageDrawable(getResources().getDrawable(R.drawable.ic_pause));
-            transcriptionBuffer.setLength(0);
-            Log.d(TAG, "Recording started");
             recordStatus = true;
         } catch (Exception e) {
             Log.d(TAG, "Error in starting record: " + e.getMessage());
