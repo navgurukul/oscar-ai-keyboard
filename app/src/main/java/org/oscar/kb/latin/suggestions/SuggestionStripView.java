@@ -54,7 +54,6 @@ import android.widget.Toast;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
-import org.oscar.kb.AIEngine.AIOutputEvent;
 import org.oscar.kb.AIEngine.OnTextUpdatedListener;
 import org.oscar.kb.AIEngine.SummarizeErrorEvent;
 import org.oscar.kb.AIEngine.SummarizeViewModel;
@@ -84,9 +83,9 @@ import org.oscar.kb.latin.define.DebugFlags;
 import org.oscar.kb.latin.settings.DebugSettings;
 import org.oscar.kb.latin.settings.Settings;
 import org.oscar.kb.latin.settings.SettingsValues;
-import org.oscar.kb.latin.setup.AppDatabase;
-import org.oscar.kb.latin.setup.Prompt;
-import org.oscar.kb.latin.setup.PromptHistoryViewModel;
+import org.oscar.kb.latin.database.AppDatabase;
+import org.oscar.kb.latin.database.Prompt;
+import org.oscar.kb.latin.database.PromptHistoryViewModel;
 import org.oscar.kb.latin.suggestions.PopupSuggestionsView.MoreSuggestionsListener;
 import org.oscar.kb.latin.utils.DeviceProtectedUtils;
 import org.oscar.kb.latin.utils.Log;
@@ -509,7 +508,7 @@ public final class SuggestionStripView extends RelativeLayout implements OnClick
         mMoreSuggestionsSlidingDetector = new GestureDetector(context, mMoreSuggestionsSlidingListener);
 
         final KeyboardIconsSet iconsSet = KeyboardIconsSet.Companion.getInstance();
-        mIncognitoIcon = iconsSet.getNewDrawable(KeyboardIconsSet.NAME_INCOGNITO_KEY, context);
+        mIncognitoIcon = iconsSet.getNewDrawable(ToolbarKey.INCOGNITO.name(), context);
         mToolbarArrowIcon = iconsSet.getNewDrawable(KeyboardIconsSet.NAME_TOOLBAR_KEY, context);
         mBinIcon = iconsSet.getNewDrawable(KeyboardIconsSet.NAME_BIN, context);
 

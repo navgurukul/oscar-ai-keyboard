@@ -29,6 +29,7 @@ public final class AudioAndHapticFeedbackManager {
 
     private SettingsValues mSettingsValues;
     private boolean mSoundOn;
+    private boolean mDoNotDisturb;
 
     private static final AudioAndHapticFeedbackManager sInstance =
             new AudioAndHapticFeedbackManager();
@@ -68,7 +69,7 @@ public final class AudioAndHapticFeedbackManager {
     }
 
     private boolean reevaluateIfSoundIsOn() {
-        if (mSettingsValues == null || !mSettingsValues.mSoundOn || mAudioManager == null) {
+        if (mSettingsValues == null || !mSettingsValues.mSoundOn || mAudioManager == null || mDoNotDisturb) {
             return false;
         }
         return mAudioManager.getRingerMode() == AudioManager.RINGER_MODE_NORMAL;
@@ -92,7 +93,7 @@ public final class AudioAndHapticFeedbackManager {
     }
 
     public void performHapticFeedback(final View viewToPerformHapticFeedbackOn) {
-        if (!mSettingsValues.mVibrateOn) {
+        if (!mSettingsValues.mVibrateOn || mDoNotDisturb) {
             return;
         }
         if (mSettingsValues.mKeypressVibrationDuration >= 0) {
@@ -112,7 +113,8 @@ public final class AudioAndHapticFeedbackManager {
         mSoundOn = reevaluateIfSoundIsOn();
     }
 
-    public void onRingerModeChanged() {
+    public void onRingerModeChanged(boolean doNotDisturb) {
+        mDoNotDisturb = doNotDisturb;
         mSoundOn = reevaluateIfSoundIsOn();
     }
 }

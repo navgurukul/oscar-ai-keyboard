@@ -19,15 +19,15 @@ class DictionaryHeader(
     @JvmField val mDictionaryOptions: DictionaryOptions,
 ) {
     val mLocaleString = mDictionaryOptions.mAttributes[DICTIONARY_LOCALE_KEY]
-        ?: throw _root_ide_package_.org.oscar.kb.latin.makedict.UnsupportedFormatException("Cannot create a FileHeader without a locale")
+        ?: throw UnsupportedFormatException("Cannot create a FileHeader without a locale")
     @JvmField
     val mVersionString = mDictionaryOptions.mAttributes[DICTIONARY_VERSION_KEY]
-        ?: throw _root_ide_package_.org.oscar.kb.latin.makedict.UnsupportedFormatException(
+        ?: throw UnsupportedFormatException(
             "Cannot create a FileHeader without a version"
         )
     @JvmField
     val mIdString = mDictionaryOptions.mAttributes[DICTIONARY_ID_KEY]
-        ?: throw _root_ide_package_.org.oscar.kb.latin.makedict.UnsupportedFormatException("Cannot create a FileHeader without an ID")
+        ?: throw UnsupportedFormatException("Cannot create a FileHeader without an ID")
     private val mDate = mDictionaryOptions.mAttributes[DICTIONARY_DATE_KEY]?.toIntOrNull()
 
     val description: String?

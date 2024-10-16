@@ -1,4 +1,4 @@
-package org.oscar.kb.latin.setup;
+package org.oscar.kb.latin.database;
 
 
 import androidx.room.Entity;

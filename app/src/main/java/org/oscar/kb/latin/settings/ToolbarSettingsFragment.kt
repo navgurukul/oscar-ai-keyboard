@@ -39,7 +39,8 @@ class ToolbarSettingsFragment : SubScreenFragment() {
         findPreference<Preference>(Settings.PREF_CLIPBOARD_TOOLBAR_KEYS)?.onPreferenceClickListener =
             Preference.OnPreferenceClickListener {
                 reorderDialog(
-                    requireContext(), Settings.PREF_CLIPBOARD_TOOLBAR_KEYS, defaultClipboardToolbarPref,
+                    requireContext(),
+                    Settings.PREF_CLIPBOARD_TOOLBAR_KEYS, defaultClipboardToolbarPref,
                     R.string.clipboard_toolbar_keys
                 ) { iconsSet.getNewDrawable(it, requireContext()) }
                 true

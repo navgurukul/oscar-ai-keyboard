@@ -1,8 +1,9 @@
-package org.oscar.kb.latin.setup;
+package org.oscar.kb.latin.database;
 
 import android.app.Application;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
+
 import java.util.List;
 public class PromptHistoryViewModel extends AndroidViewModel {
     private final PromptHistoryRepository mRepository;

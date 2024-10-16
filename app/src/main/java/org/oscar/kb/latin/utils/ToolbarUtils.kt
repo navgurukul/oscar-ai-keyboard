@@ -5,12 +5,10 @@ import android.content.SharedPreferences
 import android.widget.ImageButton
 import android.widget.ImageView
 import androidx.core.content.edit
-import org.oscar.kb.R
-import org.oscar.kb.keyboard.KeyboardTheme
 import org.oscar.kb.keyboard.internal.KeyboardIconsSet
 import org.oscar.kb.keyboard.internal.keyboard_parser.floris.KeyCode
+import org.oscar.kb.R
 import org.oscar.kb.latin.settings.Settings
-import org.oscar.kb.latin.utils.DeviceProtectedUtils
 import org.oscar.kb.latin.utils.ToolbarKey.*
 import java.util.EnumMap
 import java.util.Locale

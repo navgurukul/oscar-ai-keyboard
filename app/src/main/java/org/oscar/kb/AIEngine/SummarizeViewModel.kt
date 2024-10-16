@@ -1,20 +1,15 @@
 package org.oscar.kb.AIEngine
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.ai.client.generativeai.GenerativeModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.EventBus
-import org.oscar.kb.latin.setup.AppDatabase
-import org.oscar.kb.latin.setup.Prompt
 import org.oscar.kb.latin.utils.Log
 
 class SummarizeViewModel(

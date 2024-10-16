@@ -1,7 +1,8 @@
-package org.oscar.kb.latin.setup;
+package org.oscar.kb.latin.database;
 
 import android.content.Context;
 import androidx.lifecycle.LiveData;
+
 import java.util.List;
 public class PromptHistoryRepository {
     private final PromptDao promptDao;
